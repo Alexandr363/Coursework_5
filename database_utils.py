@@ -19,20 +19,20 @@ def create_database(db_name):
     conn.autocommit = True
     cur = conn.cursor()
 
-    cur.execute("""CREATE TABLE vacancies (
-                id_vacancy INTEGER,
-                id_company INTEGER PRIMARY KEY,
-                vacancy_name VARCHAR,
-                salary INTEGER,
-                url_vacancy TEXT
-                )
-                """)
-
     cur.execute("""CREATE TABLE employees (
                 id_company INTEGER PRIMARY KEY,
                 company_name VARCHAR,
                 vacancy_count INTEGER,
                 url_employees TEXT
+                )
+                """)
+
+    cur.execute("""CREATE TABLE vacancies (
+                id_vacancy INTEGER PRIMARY KEY,
+                id_company INTEGER REFERENCES employees(id_company),
+                vacancy_name VARCHAR,
+                salary INTEGER,
+                url_vacancy TEXT
                 )
                 """)
     cur.close()
@@ -69,11 +69,11 @@ def db_load_data(db_name, user_employees):
         emp_vac = vacancy(id_employee)['items']
         for emp in emp_vac:
             cur.execute("""INSERT INTO  vacancies (
-                        id_vacancy, id_company, vacancy_name, salary, 
+                        id_vacancy, id_company, vacancy_name, salary,
                         url_vacancy)
                         VALUES (%s, %s, %s, %s, %s)""",
                         (emp['id'],
-                         emp['id'],
+                         emp['employer']['id'],
                          emp['name'],
                          emp['salary']['from'],
                          emp['alternate_url']))

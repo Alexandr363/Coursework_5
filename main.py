@@ -1,6 +1,7 @@
 from vacancy_util import get_employees
 from database_utils import create_database, db_load_data
-from DBManager import DBManager
+from func_DBManager import func_dbmanager
+
 
 vacancy = []
 func_employee = get_employees()
@@ -38,18 +39,5 @@ print(f"Создана база данных {db_name} и две таблицы:
 db_load_data(db_name, user_employees=user_employees)
 print('Данные загружены в таблицы\n')
 
-while True:
-    user = input('выберете действие\n')
-    if user == '0':
-        break
-    elif user == '1':
-        DBManager.get_companies_and_vacancies_count(db_name)
-    elif user == '2':
-        DBManager.get_all_vacancies(db_name)
-    elif user == '3':
-        DBManager.get_avg_salary(db_name)
-    elif user == '4':
-        DBManager.get_vacancies_with_higher_salary(db_name)
-    elif user == '5':
-        text = input('Введите слово для поиска')
-        DBManager.get_vacancies_with_keyword(db_name, text)
+# Реализуем запросы к базе данных
+func_dbmanager(db_name)

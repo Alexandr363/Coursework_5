@@ -30,5 +30,5 @@ def func_dbmanager(db_name):
         elif user == '4':
             DBManager.get_vacancies_with_higher_salary(db_name)
         elif user == '5':
-            text = input('Введите слово для поиска ')
+            text = input('Введите слово для поиска ').title()
             DBManager.get_vacancies_with_keyword(db_name, text)

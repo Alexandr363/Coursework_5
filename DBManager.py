@@ -1,4 +1,8 @@
 import psycopg2
+from vacancy_util import config
+
+
+params = config()
 
 
 class DBManager:
@@ -7,8 +11,7 @@ class DBManager:
     def get_companies_and_vacancies_count(cls, db_name):
         """Получает список всех компаний и количество вакансий у
         каждой компании"""
-        conn = psycopg2.connect(dbname=db_name, host='localhost',
-                                user='postgres', password='admin', port=5432)
+        conn = psycopg2.connect(dbname=db_name, **params)
         conn.autocommit = True
         cur = conn.cursor()
         cur.execute("""SELECT company_name, vacancy_count 
@@ -26,8 +29,7 @@ class DBManager:
     def get_all_vacancies(cls, db_name):
         """Получает список всех вакансий с указанием названия компании, названия
         вакансии, зарплаты и ссылки на вакансию"""
-        conn = psycopg2.connect(dbname=db_name, host='localhost',
-                                user='postgres', password='admin', port=5432)
+        conn = psycopg2.connect(dbname=db_name, **params)
         conn.autocommit = True
         cur = conn.cursor()
         cur.execute("""SELECT vacancy_name, company_name, vacancy_count,
@@ -47,8 +49,7 @@ class DBManager:
     def get_avg_salary(cls, db_name):
         """Получает среднюю зарплату по вакансиям."""
 
-        conn = psycopg2.connect(dbname=db_name, host='localhost',
-                                user='postgres', password='admin', port=5432)
+        conn = psycopg2.connect(dbname=db_name, **params)
         conn.autocommit = True
         cur = conn.cursor()
         cur.execute("""SELECT AVG(salary) 
@@ -67,8 +68,7 @@ class DBManager:
         """Получает список всех вакансий, у которых зарплата выше средней по
         всем вакансиям"""
 
-        conn = psycopg2.connect(dbname=db_name, host='localhost',
-                                user='postgres', password='admin', port=5432)
+        conn = psycopg2.connect(dbname=db_name, **params)
         conn.autocommit = True
         cur = conn.cursor()
         cur.execute("""SELECT vacancy_name 
@@ -89,8 +89,7 @@ class DBManager:
         """Получает список всех вакансий, в названии которых содержатся
         переданные в метод слова, например python"""
 
-        conn = psycopg2.connect(dbname=db_name, host='localhost',
-                                user='postgres', password='admin', port=5432)
+        conn = psycopg2.connect(dbname=db_name, **params)
         conn.autocommit = True
         cur = conn.cursor()
         cur.execute(f"SELECT vacancy_name "

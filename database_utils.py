@@ -1,12 +1,14 @@
 import psycopg2
-from vacancy_util import get_employees, vacancy
+from vacancy_util import get_employees, vacancy, config
+
+
+params = config()
 
 
 def create_database(db_name):
     """Создаём базу данных и 2 таблицы"""
 
-    conn = psycopg2.connect(dbname='postgres', host='localhost',
-                            user='postgres', password='admin', port=5432)
+    conn = psycopg2.connect(dbname='postgres', **params)
     conn.autocommit = True
     cur = conn.cursor()
     cur.execute(f'DROP DATABASE IF EXISTS {db_name}')
@@ -14,8 +16,7 @@ def create_database(db_name):
     cur.close()
     conn.close()
 
-    conn = psycopg2.connect(dbname=db_name, host='localhost', user='postgres',
-                            password='admin', port=5432)
+    conn = psycopg2.connect(dbname=db_name, **params)
     conn.autocommit = True
     cur = conn.cursor()
 
@@ -43,8 +44,7 @@ def db_load_data(db_name, user_employees):
     """Загружаем данные в таблицы"""
 
     employees = get_employees()
-    conn = psycopg2.connect(dbname=db_name, host='localhost', user='postgres',
-                            password='admin', port=5432)
+    conn = psycopg2.connect(dbname=db_name, **params)
     conn.autocommit = True
     cur = conn.cursor()
 
@@ -59,8 +59,7 @@ def db_load_data(db_name, user_employees):
     cur.close()
     conn.close()
 
-    conn = psycopg2.connect(dbname=db_name, host='localhost', user='postgres',
-                            password='admin', port=5432)
+    conn = psycopg2.connect(dbname=db_name, **params)
     conn.autocommit = True
     cur = conn.cursor()
 
